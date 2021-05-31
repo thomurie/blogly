@@ -1,5 +1,6 @@
 """Models for Blogly."""
 from flask_sqlalchemy import SQLAlchemy
+
 def connect_db(app):
 
     db.app = app
@@ -9,7 +10,7 @@ db = SQLAlchemy()
 
 class User(db.Model):
 
-    __tablename__ = user
+    __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key = True, autoincrement =True)
 

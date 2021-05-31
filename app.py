@@ -9,44 +9,58 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
 connect_db(app)
-db.init(app)
 db.create_all()
 
-@app.route('/', methods=["GET"] )
-def home():
+@app.route('/', methods=["GET"])
+def home_page():
     return redirect('/users')
 
 @app.route('/users', methods=["GET"] )
-def home():
+def users():
     users = User.query.all()
     # links to users/new
     return render_template('index.html', users = users)
 
 @app.route('/users/new', methods=["GET"] )
-def home():
+def new_get():
     return render_template('form.html')
 
 @app.route('/users/new', methods=["POST"] )
-def home():
-   return redirect('/users')
+def new_post():
+    fname = request.form.get('firstname')
+    lname = request.form.get('lastname')
+    imgurl = request.form.get('imageurl')
+    newuser = User(first_name = fname, last_name = lname, image_url = imgurl)
+    db.session.add(newuser)
+    db.session.commit()
+    return redirect('/users')
 
 @app.route('/users/<int:user_id>', methods=["GET"] )
-def home(user_id):
-    user = User.query.filter(User.id == user_id)
-    # link to /users/<int:user_id>/edit
-    # link to /users/<int:user_id>/delete
+def user_by_id(user_id):
+    user = User.query.filter_by(id = user_id).first()
     return render_template('user.html', user = user)
 
 @app.route('/users/<int:user_id>/edit', methods=["GET"] )
-def home(user_id):
-    user = User.query.filter(User.id == user_id)
-    # link to cancel, returns to userpagwe
+def edit_user(user_id):
+    user = User.query.filter_by(id = user_id).first()
     return render_template('edit.html', user = user)
 
 @app.route('/users/<int:user_id>/edit', methods=["POST"] )
-def home(user_id):
+def edit_user_post(user_id):
+    fname = request.form.get('firstname')
+    lname = request.form.get('lastname')
+    imgurl = request.form.get('imageurl')
+    user = User.query.filter_by(id = user_id).first()
+    user.first_name = fname
+    user.last_name = lname
+    user.image_url = imgurl
+    db.session.add(user)
+    db.session.commit()
+
     return redirect('/users')
 
 @app.route('/users/<int:user_id>/delete', methods=["POST"] )
-def home(user_id):
+def delete_user(user_id):
+    User.query.filter_by(id = user_id).delete()
+    db.session.commit()
     return redirect('/users')

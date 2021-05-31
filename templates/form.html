@@ -5,16 +5,16 @@ content %}
   <li>{{ user.first_name }}</li>
   {% endfor %}
 </ul>
-<form action="/users/new" method="post"></form>
+<form action="/users/new" method="post">
+  <label for="firstname">First Name</label>
+  <input type="text" name="firstname" id="" />
 
-<label for="firstname">First Name</label>
-<input type="text" name="firstname" id="" />
+  <label for="lastname">Last Name</label>
+  <input type="text" name="lastname" id="" />
 
-<label for="lastname">Last Name</label>
-<input type="text" name="lastname" id="" />
+  <label for="imageurl">Image URL</label>
+  <input type="url" name="imageurl" id="" />
 
-<label for="imageurl">Image URL</label>
-<input type="url" name="imageurl" id="" />
-
-<button type="submit">Add</button>
+  <button type="submit">Add</button>
+</form>
 {% endblock %}
