@@ -1,0 +1,15 @@
+{% extends 'base.html' %}{% block title %}Users{% endblock %} {% block content
+%}
+<img
+  src="{{ user.image_url }}"
+  alt="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCDe5JZ_HkfuU5VFQDlF0j1jeCl-SCj_mJdA&usqp=CAU"
+/>
+
+<h1>{{ user.first_name }} {{ user.last_name }}</h1>
+<form action="" method="get">
+  <button type="submit">Edit</button>
+</form>
+<form action="/users/<int:user_id>/delete" method="post">
+  <button type="submit">delete</button>
+</form>
+{% endblock %}
