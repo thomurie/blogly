@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, render_template, request, redirect
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -64,3 +64,57 @@ def delete_user(user_id):
     User.query.filter_by(id = user_id).delete()
     db.session.commit()
     return redirect('/users')
+
+# PART TWO
+# POST Routes
+@app.route('/posts/', methods = ["GET"])
+def all_posts():
+    return render_template('post.html')
+
+@app.route('/users/<int:user_id>/posts/new', methods =["GET"])
+def get_new_user_post(user_id):
+    user = User.query.filter_by(id = user_id).first()
+    return render_template('new_post.html', user = user)
+
+@app.route('/users/<int:user_id>/posts/new', methods =["POST"])
+def post_new_user_post(user_id):
+    title = request.form.get('posttitle')
+    content = request.form.get('content')
+
+    newpost = Post(title = title, content = content, user_id = user_id)
+
+    db.session.add(newpost)
+    db.session.commit()
+
+    return redirect(f"/users/{user_id}")
+
+@app.route('/posts/<int:post_id>', methods=["GET"])
+def show_post(post_id):
+    post = Post.query.filter_by(id = post_id).first()
+    return render_template('post.html', post= post)
+
+@app.route('/posts/<int:post_id>/edit', methods=["GET"])
+def show_edit_form(post_id):
+    post = Post.query.filter_by(id = post_id).first()
+    return render_template("edit_post.html", post = post)
+
+@app.route('/posts/<int:post_id>/edit', methods=["POST"])
+def handle_edit_form(post_id):
+    title = request.form.get('posttitle')
+    content = request.form.get('content')
+
+    post = Post.query.filter_by(id = post_id).first()
+
+    post.title = title
+    post.content = content
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/posts/{post_id}')
+
+@app.route('/posts/<int:post_id>/delete', methods = ['POST'])
+def delete_post(post_id):
+    Post.query.filter_by(id = post_id).delete()
+    db.session.commit()
+    return redirect(f"/users")
