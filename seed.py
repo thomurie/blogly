@@ -1,4 +1,4 @@
-from models import User, db, Post
+from models import User, db, Post, Tag, PostTag
 from app import app
 
 db.drop_all()
@@ -24,8 +24,40 @@ john_post_one = Post(title= 'Uno', content = 'This is my very first post', user_
 john_post_two =  Post(title= 'Two', content = 'This is my very second post', user_id = 1)
 john_post_three =  Post(title= 'Tres', content = 'This is my very third post', user_id = 1)
 
+paul_post_one = Post(title= 'Uno', content = 'This is my very first post', user_id = 2)
+paul_post_two =  Post(title= 'Two', content = 'This is my very second post', user_id = 2)
+paul_post_three =  Post(title= 'Tres', content = 'This is my very third post', user_id = 2)
+
 db.session.add(john_post_one)
 db.session.add(john_post_two)
 db.session.add(john_post_three)
 
+db.session.add(paul_post_one)
+db.session.add(paul_post_two)
+db.session.add(paul_post_three)
+
 db.session.commit()
+
+funny = Tag(name = 'funny')
+trending = Tag(name = 'trending')
+sad = Tag(name = 'sad')
+
+db.session.add(funny)
+db.session.add(trending)
+db.session.add(sad)
+
+db.session.commit()
+
+def addtag(post_id, tag_id):
+    return PostTag(post_id= post_id, tag_id = tag_id)
+
+one_funny = addtag(1, 1)
+three_trending = addtag(3,2)
+four_sad = addtag(4,3)
+
+db.session.add(one_funny)
+db.session.add(three_trending)
+db.session.add(four_sad)
+
+db.session.commit()
+

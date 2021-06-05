@@ -8,9 +8,15 @@
   <label for="content">Content</label>
   <textarea id="" name="content" rows="4" cols="50">Say Anything</textarea>
 
+  {% for tag in tags%}
+  <label for="{{ tag.id }}">{{tag.name}}</label>
+  <input type="checkbox" name="{{ tag.id }}" id="" /> {% endfor %}
+
   <button type="submit">Add</button>
 </form>
 <form action="/users/{{ user.id }}" method="get">
   <button type="submit">Cancel</button>
 </form>
 {% endblock %}
+
+<input type="checkbox" name="" id="" />

@@ -5,6 +5,13 @@
 <p style="font-style: italic">
   By: {{ post.user.first_name }} {{ post.user.last_name }}
 </p>
+
+<h3>Tags:</h3>
+<ul>
+  {% for tag in post.all_tags %}
+  <li><a href="/tags/{{ tag.id }}">{{ tag.name }}</a></li>
+  {% endfor %}
+</ul>
 <form action="/" method="get">
   <button type="submit">Cancel</button>
 </form>
